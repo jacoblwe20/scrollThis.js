@@ -19,14 +19,14 @@ p {
   overflow: hidden;
 }
 /* line 20, ../sass/stylesheet.scss */
-.container .content {
+.container .scroll_content {
   padding: 0;
   border: 0;
   margin: 0;
   display: block;
 }
 /* line 25, ../sass/stylesheet.scss */
-.container .content .instagram_photo {
+.container .scroll_content .instagram_photo {
   width: 108px;
   height: 108px;
   border: 5px solid white;
@@ -43,7 +43,7 @@ p {
   box-shadow: 0 0 2px #666666;
 }
 /* line 34, ../sass/stylesheet.scss */
-.container .content .instagram_photo img {
+.container .scroll_content .instagram_photo img {
   width: 98px;
   height: 98px;
 }

@@ -8,18 +8,23 @@
     //basic elements
     that.container = container;
     that.containerHeight = that.container.outerHeight();
-    that.content = that.container.children(':first').addClass('scroll_content');
-    that.contentHeight = that.content.outerHeight();
+    that.content = $("<div/>").addClass("scroll_content");
+    that.container.find(">").wrapAll(that.content);
+    that.content = that.container.find(".scroll_content");
+    //console.log(that.content);
+    //that.content = that.container.children(':first').addClass('scroll_content');
     //scrollbar elements
     that.scrollbar = $('<div/>').addClass('scrollbar');
     that.scrollbarMock = $('<div/>').addClass('scrollbar_mock');
     that.track = $('<div/>').addClass('scrollbar_track');
-    //calculations
-    that.percent = (that.containerHeight/that.contentHeight) * 100;
-    that.scrollHeight = (that.containerHeight/that.contentHeight) * that.containerHeight;
-    that.max = (that.contentHeight - that.containerHeight) * (-1);
-    that.maxScroll = (that.containerHeight - that.scrollHeight);
     //utilities
+    that.calculate = function(){
+      that.contentHeight = that.content.height();
+      that.percent = (that.containerHeight/that.contentHeight) * 100;
+      that.scrollHeight = (that.containerHeight/that.contentHeight) * that.containerHeight;
+      that.max = (that.contentHeight - that.containerHeight) * (-1);
+      that.maxScroll = (that.containerHeight - that.scrollHeight);
+    };
     that.transform = (function () {
       var body = document.body || document.documentElement,
         style = body.style, property = 'transform', vendor;
@@ -76,6 +81,7 @@
 
     that.init = function (container) {
       var delta_d;
+      that.calculate();
       that.scrollbar.css($.extend({}, {height: that.percent + "%"}, that.css(0)));
       that.scrollbarMock.css({height: that.percent + "%"});
       that.content.css(that.css(0));
@@ -168,6 +174,7 @@
       arr.push(scrollThis($(this)));
     });
     this.scrollers = arr;
+    window.scrollers = arr;
     return this;
   };
 
