@@ -79,6 +79,53 @@
       );   
     };
 
+    that.attach = function(){
+
+      delta_d = that.css();
+
+      that.container.hover(function () {
+        that.container.addClass('scroll_time');
+      }, function () {
+        that.container.removeClass('scroll_time');
+      });
+
+      that.container.on('mousewheel', function (e,d) {
+        e.preventDefault();
+        if (d > 1){d = 1;}
+        delta_d = delta_d + d*10;
+        // console.log(delta_d);
+        if (delta_d < that.max) {
+          delta_d = that.max;
+          that.content.css(that.css(delta_d));
+        } else if (delta_d > 0) {
+          delta_d = 0
+          that.content.css(that.css(delta_d));
+        }
+        that.content.css(that.css(delta_d));
+        that.scrollbar.css(that.css((delta_d / that.max) * that.maxScroll));
+        that.scrollbarMock.css({'top' : ((delta_d / that.max) * that.maxScroll) + 'px'})
+      });
+
+      that.scrollbarMock.draggable({ 
+        axis: "y",
+        scroll: true,
+        containment: "parent", 
+        drag: function (e, f) {
+          var top = f.position.top;
+          that.position(top);
+          delta_d = that.css();
+        },
+        stop: function () {
+          setTimeout(function () {
+            if (!that.container.hasClass('scroll_time')){
+              that.container.addClass('scroll_time');
+            }
+          }, 1);
+        }
+      });
+      
+    };
+
     that.init = function (container) {
       var delta_d;
       that.calculate();
@@ -100,46 +147,8 @@
         }
       }
 
-      that.container.hover(function () {
-        that.container.addClass('scroll_time');
-        delta_d = that.css();
-        that.container.on('mousewheel', function (e,d) {
-          e.preventDefault();
-          if (d > 1){d = 1;}
-          delta_d = delta_d + d*10;
-          // console.log(delta_d);
-          if (delta_d < that.max) {
-            delta_d = that.max;
-            that.content.css(that.css(delta_d));
-          } else if (delta_d > 0) {
-            delta_d = 0
-            that.content.css(that.css(delta_d));
-          }
-          that.content.css(that.css(delta_d));
-          that.scrollbar.css(that.css((delta_d / that.max) * that.maxScroll));
-          that.scrollbarMock.css({'top' : ((delta_d / that.max) * that.maxScroll) + 'px'})
-        });
-        that.scrollbarMock.draggable({ 
-          axis: "y",
-          scroll: true,
-          containment: "parent", 
-          drag: function (e, f) {
-            var top = f.position.top;
-            that.position(top);
-            delta_d = that.css();
-          },
-          stop: function () {
-            setTimeout(function () {
-              if (!that.container.hasClass('scroll_time')){
-                that.container.addClass('scroll_time');
-              }
-            }, 1);
-          }
-        });
-        return false;
-      }, function () {
-        that.container.removeClass('scroll_time');
-      });
+      that.attach();
+
       if (that.touch) {
           that.container.css({'overflow':'auto'});
       }
