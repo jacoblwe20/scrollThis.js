@@ -56,7 +56,7 @@
       if(top || top === 0){
         var obj = {};
         obj[(that.transform) ? that.transform : 'top'] = 
-          (that.transform) ? 'translate(0,' + top + 'px)' : top + 'px';
+          (that.transform) ? 'translate3d(0,' + top + 'px, 0)' : top + 'px';
         return obj;
       }else{
         var y;
